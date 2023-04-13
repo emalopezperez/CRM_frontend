@@ -1,30 +1,54 @@
-import Layout from "@/layout/Layout"
+import { useRouter } from 'next/router';
 import { useFormik } from "formik"
 import * as Yup from "yup"
 
-const Registrar = () => {
+
+const Login = () => {
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      nombre: "",
       email: "",
       password: ""
     },
     validationSchema: Yup.object({
-      nombre: Yup.string().required('El nombre es obligatorio'),
       email: Yup.string().email('El email es obligatorio').required('El email es obligatorio'),
       password: Yup.string().required('El password es obligatorio').min(6, "El pasword debe contener al menos 6 caracteres")
     }),
-    onSubmit: (values) => {
-      console.log(values)
+    onSubmit: async (values) => {
+      const apiUrl = "http://localhost:3001/api/"
+      let data = {
+        email: values.email,
+        password: values.password
+      }
+      await fetch(`${apiUrl}login_colaborador_admin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.data === undefined) {
+          }
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(response.usuario));
+
+            router.push('/')
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
   })
-
   return (
-    <Layout>
+    <div>
       <div className="">
         <div className="flex flex-col items-center justify-center h-screen m-auto overflow-scroll ">
           <div className="bg-[#1E1F24] rounded-md">
-            <h2 className="flex justify-center my-4 font-sans text-4xl font-bold text-white">Registrarse</h2>
+            <h2 className="flex justify-center my-4 font-sans text-4xl font-bold text-white">Iniciar Sesión</h2>
             <span className="flex justify-center text-sm text-gray-300">Panel administrador</span>
             <div className="flex justify-center ">
               <div className="w-full max-w-lg ">
@@ -32,28 +56,6 @@ const Registrar = () => {
                   className="px-8 pt-6 pb-8 mb-4 rounded shadow-md"
                   onSubmit={ formik.handleSubmit }
                 >
-                  <div className="mb-4">
-                    <label
-                      className="block mb-2 text-sm text-gray-500"
-                      htmlFor="nombre"
-                    >Nombre</label>
-                    <input
-                      type="text"
-                      className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                      id="nombre"
-                      placeholder="Nombre de Usuario"
-                      value={ formik.values.nombre }
-                      onChange={ formik.handleChange }
-                      onBlur={ formik.handleBlur }
-                    />
-
-                    { formik.touched.nombre && formik.errors.nombre ?
-                      <div className="mt-2 text-red-600">
-                        <p className="text-sm">{ formik.errors.nombre }</p>
-                      </div>
-                      : null
-                    }
-                  </div>
 
                   <div className="mb-4">
                     <label
@@ -103,7 +105,7 @@ const Registrar = () => {
                   <input
                     type="submit"
                     className="w-full p-2 font-bold text-white uppercase bg-orange-600 cursor-pointer hover:bg-orange-400"
-                    value="registrarse"
+                    value="Iniciar Sesión"
                   />
                 </form>
               </div>
@@ -111,8 +113,8 @@ const Registrar = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   )
 }
 
-export default Registrar
+export default Login

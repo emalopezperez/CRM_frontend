@@ -1,8 +1,11 @@
 import Link from "next/link"
 
+
 const Sidebar = () => {
   return (
-    <div className="flex h-screen flex-col justify-between border-r bg-[#1E1F24] w-60 text-gray-400  fixed   ">
+    <div
+      className='w-[80%] md:w-[40%] top-0 
+        lg:w-80 h-full overflow-y-scroll text-gray-400 transition-all bg-[#181A20] p-4 lg:p-0 shadow-2xl lg:shadow-none z-50 fixed'>
       <div className="px-4 py-6">
         <span
           className="grid w-32 h-10 text-xl font-bold text-white rounded-lg place-content-center"
