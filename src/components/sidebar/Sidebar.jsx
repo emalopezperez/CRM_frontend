@@ -349,15 +349,12 @@ const Sidebar = () => {
           <div>
             <p className="text-xs">
               <strong className="block font-medium">User</strong>
-
               <span>user@user.com </span>
             </p>
           </div>
         </Link>
       </div>
     </div>
-
-
   )
 }
 

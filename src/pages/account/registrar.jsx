@@ -48,7 +48,7 @@ const Registrar = () => {
                     />
 
                     { formik.touched.nombre && formik.errors.nombre ?
-                      <div className="mt-2 text-red-700">
+                      <div className="mt-2 text-red-600">
                         <p className="text-sm">{ formik.errors.nombre }</p>
                       </div>
                       : null
@@ -71,7 +71,7 @@ const Registrar = () => {
                     />
 
                     { formik.touched.email && formik.errors.email ?
-                      <div className="mt-2 text-red-700">
+                      <div className="mt-2 text-red-600">
                         <p className="text-sm">{ formik.errors.email }</p>
                       </div>
                       : null
@@ -94,7 +94,7 @@ const Registrar = () => {
                     />
 
                     { formik.touched.password && formik.errors.password ?
-                      <div className="mt-2 text-red-700">
+                      <div className="mt-2 text-red-600">
                         <p className="text-sm">{ formik.errors.password }</p>
                       </div>
                       : null

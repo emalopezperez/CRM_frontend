@@ -2,6 +2,7 @@ import Layout from "@/layout/Layout"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 
+
 const Login = () => {
   const formik = useFormik({
     initialValues: {
@@ -13,9 +14,25 @@ const Login = () => {
       password: Yup.string().required('El password es obligatorio').min(6, "El pasword debe contener al menos 6 caracteres")
     }),
     onSubmit: (values) => {
-      console.log(values)
+      const apiUrl = "http://localhost:3001/api/"
+      let data = {
+        email: values.email,
+        password: values.password
+      }
+      fetch(`${apiUrl}login_colaborador_admin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error))
+        .catch(parseError => console.error(parseError));
     }
   })
+    
 
   return (
     <Layout>
@@ -47,7 +64,7 @@ const Login = () => {
                     />
 
                     { formik.touched.email && formik.errors.email ?
-                      <div className="mt-2 text-red-700">
+                      <div className="mt-2 text-red-600">
                         <p className="text-sm">{ formik.errors.email }</p>
                       </div>
                       : null
@@ -70,7 +87,7 @@ const Login = () => {
                     />
 
                     { formik.touched.password && formik.errors.password ?
-                      <div className="mt-2 text-red-700">
+                      <div className="mt-2 text-red-600">
                         <p className="text-sm">{ formik.errors.password }</p>
                       </div>
                       : null
