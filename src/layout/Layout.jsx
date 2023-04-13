@@ -8,8 +8,14 @@ const Layout = ({ children }) => {
         <title>CRM - Ecommerce</title>
         <meta property="Emanuel Lopez" content="My page title" key="Agencia Software" />
       </Head>
-      <Sidebar />
-      { children }
+      <div className="">
+        <div>
+          <Sidebar />
+        </div>
+        <div className="">
+          { children }
+        </div>
+      </div>
     </>
   )
 }

@@ -2,14 +2,13 @@ import Link from "next/link"
 
 const Sidebar = () => {
   return (
-    <div className="flex h-screen flex-col justify-between border-r bg-[#1E1F24] w-60 fixed text-gray-400">
+    <div className="flex h-screen flex-col justify-between border-r bg-[#1E1F24] w-60 text-gray-400  fixed   ">
       <div className="px-4 py-6">
         <span
           className="grid w-32 h-10 text-xl font-bold text-white rounded-lg place-content-center"
         >
           Logo
         </span>
-
         <nav aria-label="Main Nav" className="flex flex-col mt-6 space-y-1">
           <details className="group [&_summary::-webkit-details-marker]:hidden">
             <summary
