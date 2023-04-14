@@ -122,7 +122,7 @@ const Sidebar = () => {
           </details>
 
           <Link
-            href="#"
+            href="/account/lista_colaboradores_admin"
             className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-sm hover:bg-gray-100 hover:text-gray-700"
           >
             <svg

@@ -5,6 +5,7 @@ import * as Yup from "yup"
 
 const Login = () => {
   const router = useRouter();
+  
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -44,11 +45,11 @@ const Login = () => {
     }
   })
   return (
-    <div>
-      <div className="">
-        <div className="flex flex-col items-center justify-center h-screen m-auto overflow-scroll ">
-          <div className="bg-[#1E1F24] rounded-md">
-            <h2 className="flex justify-center my-4 font-sans text-4xl font-bold text-white">Iniciar Sesión</h2>
+    <div >
+      <div className="flex flex-col min-h-screen pl-52 pt-26">
+        <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
+          <div className="rounded-md">
+            <h2 className="flex justify-center my-4 font-sans text-2xl font-bold text-black">Iniciar Sesión</h2>
             <span className="flex justify-center text-sm text-gray-300">Panel administrador</span>
             <div className="flex justify-center ">
               <div className="w-full max-w-lg ">
@@ -64,7 +65,7 @@ const Login = () => {
                     >Email</label>
                     <input
                       type="email"
-                      className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                      className="flex w-full p-3 px-3 py-2 leading-tight text-black border-2 border-gray-300 rounded-lg shadow outline-none appearance-none focus:outline-none focus:shadow-outline"
                       id="email"
                       placeholder="Email de Usuario"
                       value={ formik.values.email }
@@ -87,8 +88,7 @@ const Login = () => {
                     >Password</label>
                     <input
                       type="password"
-                      className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                      id="password"
+                      className="flex w-full p-3 px-3 py-2 leading-tight text-black border-2 border-gray-300 rounded-lg shadow outline-none appearance-none focus:outline-none focus:shadow-outline"
                       placeholder="Password de Usuario"
                       value={ formik.values.password }
                       onChange={ formik.handleChange }
@@ -104,7 +104,7 @@ const Login = () => {
                   </div>
                   <input
                     type="submit"
-                    className="w-full p-2 font-bold text-white uppercase bg-orange-600 cursor-pointer hover:bg-orange-400"
+                    className="w-full p-2 text-white bg-orange-600 cursor-pointer hover:bg-orange-400"
                     value="Iniciar Sesión"
                   />
                 </form>
