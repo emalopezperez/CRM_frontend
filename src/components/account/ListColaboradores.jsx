@@ -2,33 +2,39 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 
 const ListColaboradores = () => {
-    const [listaColaboradores, setListaColaboradores] = useState([])
+    const [listaColaboradores, setListaColaboradores] = useState([]);
+    const [searchValue, setSearchValue] = useState("");
 
-    useEffect(() => {
-        const apiUrl = "http://localhost:3001/api/"
-        const token = localStorage.getItem('token')
+    const llamadoApi = () => {
+        const apiUrl = "http://localhost:3001/api/";
+        const token = localStorage.getItem("token");
+        let filtro = searchValue
+        let url = `${apiUrl}lista_colaboradores_admin/${filtro}`;
 
-        fetch(`${apiUrl}lista_colaboradores_admin`, {
-            method: 'GET',
+        fetch(url, {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token
-            }
+                "Content-Type": "application/json",
+                Authorization: token,
+            },
         })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response)
+            .then((response) => response.json())
+            .then((response) => {
+                console.log(response);
 
-                setListaColaboradores(response.colaboradores)
+                setListaColaboradores(response.colaboradores);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(error);
             });
+    };
 
-    }, [])
+    useEffect(() => {
+        llamadoApi()
+    }, [searchValue])
 
     return (
-        <div className="flex flex-col pt-16 pl-52">
+        <div className="flex flex-col pt-16 pb-16 pl-52">
             <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
                 <div className="">
                     <span className="flex justify-center text-sm text-gray-300">Colaboradores</span>
@@ -39,9 +45,27 @@ const ListColaboradores = () => {
                     </div>
                     <div className="flex justify-center ">
                         <div className="w-full max-w-[600px]">
-
-
                             <div className="mt-14 ">
+                                <form className="mb-5">
+                                    <div class="flex flex-wrap justify-between mx-auto">
+                                        <div class="w-full px-2 mb-4 md:mb-0 ">
+                                            <div class="relative">
+                                                <input
+                                                    value={ searchValue }
+                                                    onChange={ (e) => setSearchValue(e.target.value) }
+                                                    class="form-control list-search py-3 pl-10 pr-4 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 text-black " type="search" placeholder="Buscar colaborador" />
+
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <span class="text-gray-500 sm:text-sm">
+                                                        <i class="fe fe-search"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+
                                 <table className="min-w-full text-sm divide-y-2 divide-gray-200">
                                     <thead>
                                         <tr>
