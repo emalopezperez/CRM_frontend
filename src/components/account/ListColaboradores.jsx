@@ -92,6 +92,10 @@ const ListColaboradores = () => {
                                                         <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
                                                             Estado
                                                         </th>
+
+                                                        <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
+                                                            Acciones
+                                                        </th>
                                                     </tr>
                                                 </thead>
 
@@ -119,7 +123,7 @@ const ListColaboradores = () => {
                                                                 ) }
                                                             </td>
 
-                                                            <td className="px-4 py-2 font-medium text-left text-gray-900 cursor-pointer whitespace-nowrap" onClick={ () => router.push(`/account/edit_colaborador_admin/${colaborador._id}`) }>
+                                                            <td className="flex justify-center px-4 py-2 font-medium text-gray-900 cursor-pointer whitespace-nowrap" onClick={ () => router.push(`/account/edit_colaborador_admin/${colaborador._id}`) }>
                                                                 <FiEdit />
                                                             </td>
                                                         </tr>

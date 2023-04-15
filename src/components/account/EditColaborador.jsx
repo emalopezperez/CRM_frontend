@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useFormik } from "formik"
+import * as Yup from "yup"
 
 
 const EditColaborador = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [colaboradorObtenido, setColaboradorObtenido] = useState({})
+  const [colaboradorObtenido, setColaboradorObtenido] = useState([])
 
   const llamadoApi = () => {
     const apiUrl = "http://localhost:3001/api/";
@@ -24,7 +25,7 @@ const EditColaborador = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
+
         setColaboradorObtenido(response)
       })
       .catch((error) => {
@@ -44,8 +45,38 @@ const EditColaborador = () => {
       email: "",
       cargo: 'administrador',
     },
+    validationSchema: Yup.object({
+      email: Yup.string().email('El email no es valido'),
+    }),
+
     onSubmit: async (values) => {
-      console.log(values)
+      const apiUrl = "http://localhost:3001/api/"
+      const token = localStorage.getItem('token')
+
+      let data = {
+        email: values.email,
+        nombre: values.nombre,
+        apellido: values.apellido,
+        rol: values.cargo
+      }
+
+      await fetch(`${apiUrl}editar_colaboradores_admin/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(response => {
+          console.log(response)
+
+          router.push('/account/lista_colaboradores_admin')
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
   });
 
@@ -59,10 +90,9 @@ const EditColaborador = () => {
             <Link href='/account/lista_colaboradores_admin' className="p-1 border rounded-md cursor-pointer hover:bg-gray-200">Todos los colaboradores</Link>
             <Link href='/account/edit_colaborador_admin' className="p-1 border rounded-md cursor-pointer hover:bg-gray-200">Nuevo colaborador</Link>
           </div>
-
+          
           {
             colaboradorObtenido ?
-
               <div className="flex justify-center ">
                 <div className="w-full max-w-lg ">
                   <form
@@ -84,6 +114,13 @@ const EditColaborador = () => {
                           onChange={ formik.handleChange }
                           onBlur={ formik.handleBlur }
                         />
+
+                        { formik.touched.nombre && formik.errors.nombre ?
+                          <div className="mt-2 text-red-600">
+                            <p className="text-sm">{ formik.errors.nombre }</p>
+                          </div>
+                          : null
+                        }
                       </div>
 
                       <div className="mb-4">
@@ -100,6 +137,13 @@ const EditColaborador = () => {
                           onChange={ formik.handleChange }
                           onBlur={ formik.handleBlur }
                         />
+
+                        { formik.touched.apellido && formik.errors.apellido ?
+                          <div className="mt-2 text-red-600">
+                            <p className="text-sm">{ formik.errors.apellido }</p>
+                          </div>
+                          : null
+                        }
                       </div>
                     </div>
 
@@ -119,13 +163,19 @@ const EditColaborador = () => {
                         onBlur={ formik.handleBlur }
                       />
 
+                      { formik.touched.email && formik.errors.email ?
+                        <div className="mt-2 text-red-600">
+                          <p className="text-sm">{ formik.errors.email }</p>
+                        </div>
+                        : null
+                      }
                     </div>
 
                     <label htmlFor="cargo" className="block mb-2 text-sm text-gray-500">
                       Cargo
                     </label>
                     <select
-                      className="flex w-full p-3 px-3 py-2 mb-3 leading-tight text-black border-2 border-gray-300 rounded-lg shadow outline-none"
+                      className="flex w-full p-3 px-3 py-2 mb-3 leading-tight text-black border-2 border-gray-200 rounded-lg shadow outline-none"
                       name="cargo"
                       value={ formik.values.cargo }
                       onChange={ formik.handleChange }
@@ -135,15 +185,15 @@ const EditColaborador = () => {
                       <option value="colaborador" className="text-black">Colaborador</option>
                     </select>
 
+
                     <input
                       type="submit"
                       className="w-full p-2 text-white bg-orange-600 cursor-pointer hover:bg-orange-400"
-                      value="Crear colaborador"
+                      value="Editar colaborador"
                     />
                   </form>
                 </div>
               </div>
-
               :
               <>
                 <div className="flex justify-center mt-36">
