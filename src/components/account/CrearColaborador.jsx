@@ -11,14 +11,12 @@ const CrearColaborador = () => {
       nombre: "",
       apellido: "",
       email: "",
-      password: "",
       cargo: 'administrador',
     },
     validationSchema: Yup.object({
       nombre: Yup.string().required('El nombre es obligatorio'),
       apellido: Yup.string().required('El apellido es obligatorio'),
       email: Yup.string().email('El email es obligatorio').required('El email es obligatorio'),
-      password: Yup.string().required('El password es obligatorio').min(6, "El pasword debe contener al menos 6 caracteres")
     }),
     onSubmit: async (values) => {
       const apiUrl = "http://localhost:3001/api/"
@@ -42,7 +40,7 @@ const CrearColaborador = () => {
         .then(response => response.json())
         .then(response => {
           console.log(response)
-          
+
           router.push('/account/lista_colaboradores_admin')
         })
         .catch(error => {
@@ -139,28 +137,7 @@ const CrearColaborador = () => {
                     : null
                   }
                 </div>
-                <div className="mb-4">
-                  <label
-                    className="block mb-2 text-sm text-gray-500"
-                    htmlFor="password"
-                  >Password</label>
-                  <input
-                    type="password"
-                    className="flex w-full p-3 px-3 py-2 leading-tight text-black border-2 border-gray-300 rounded-lg shadow outline-none appearance-none focus:outline-none focus:shadow-outline"
-                    id="password"
-                    placeholder="Password de Usuario"
-                    value={ formik.values.password }
-                    onChange={ formik.handleChange }
-                    onBlur={ formik.handleBlur }
-                  />
 
-                  { formik.touched.password && formik.errors.password ?
-                    <div className="mt-2 text-red-600">
-                      <p className="text-sm">{ formik.errors.password }</p>
-                    </div>
-                    : null
-                  }
-                </div>
                 <label htmlFor="cargo" className="block mb-2 text-sm text-gray-500">
                   Cargo
                 </label>

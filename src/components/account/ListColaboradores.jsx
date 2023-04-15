@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { useRouter } from 'next/router';
+import { FiEdit } from 'react-icons/fi';
 
 const ListColaboradores = () => {
+    const router = useRouter();
+
     const [listaColaboradores, setListaColaboradores] = useState([]);
     const [searchValue, setSearchValue] = useState("");
 
@@ -46,74 +50,85 @@ const ListColaboradores = () => {
                     <div className="flex justify-center ">
                         <div className="w-full max-w-[600px]">
                             <div className="mt-14 ">
-                                <form className="mb-5">
-                                    <div class="flex flex-wrap justify-between mx-auto">
-                                        <div class="w-full px-2 mb-4 md:mb-0 ">
-                                            <div class="relative">
-                                                <input
-                                                    value={ searchValue }
-                                                    onChange={ (e) => setSearchValue(e.target.value) }
-                                                    class="form-control list-search py-3 pl-10 pr-4 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 text-black " type="search" placeholder="Buscar colaborador" />
+                                {
+                                    !listaColaboradores ? (
+                                        <h2 className="text-black">cargando...</h2>
+                                    ) : (
+                                        <>
+                                            <form className="mb-5">
+                                                <div className="flex flex-wrap justify-between mx-auto">
+                                                    <div className="w-full px-2 mb-4 md:mb-0 ">
+                                                        <div className="relative">
+                                                            <input
+                                                                value={ searchValue }
+                                                                onChange={ (e) => setSearchValue(e.target.value) }
+                                                                className="py-3 pl-10 pr-4 text-black rounded-md shadow-sm form-control list-search focus:outline-none focus:shadow-outline-blue focus:border-blue-300 "
+                                                                type="search"
+                                                                placeholder="Buscar colaborador"
+                                                            />
 
-                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <span class="text-gray-500 sm:text-sm">
-                                                        <i class="fe fe-search"></i>
-                                                    </span>
+                                                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                                                <span className="text-gray-500 sm:text-sm">
+                                                                    <i className="fe fe-search"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </form>
 
-                                    </div>
-                                </form>
+                                            <table className="min-w-full text-sm divide-y-2 divide-gray-200">
+                                                <thead>
+                                                    <tr>
+                                                        <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
+                                                            Name
+                                                        </th>
+                                                        <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
+                                                            Email
+                                                        </th>
+                                                        <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
+                                                            Rol
+                                                        </th>
+                                                        <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
+                                                            Estado
+                                                        </th>
+                                                    </tr>
+                                                </thead>
 
-                                <table className="min-w-full text-sm divide-y-2 divide-gray-200">
-                                    <thead>
-                                        <tr>
-                                            <th
-                                                className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap"
-                                            >
-                                                Name
-                                            </th>
-                                            <th
-                                                className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap"
-                                            >
-                                                Email
-                                            </th>
-                                            <th
-                                                className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap"
-                                            >
-                                                Rol
-                                            </th>
-                                            <th
-                                                className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap"
-                                            >
-                                                Estado
-                                            </th>
-                                        </tr>
-                                    </thead>
+                                                <tbody className="divide-y divide-gray-200">
+                                                    { listaColaboradores.map((colaborador, index) => (
+                                                        <tr key={ colaborador._id } className="odd:bg-gray-50">
+                                                            <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap">
+                                                                { colaborador.nombre }
+                                                            </td>
+                                                            <td className="px-4 py-2 text-gray-700 whitespace-nowrap">
+                                                                { colaborador.email }
+                                                            </td>
+                                                            <td className="px-4 py-2 text-gray-700 whitespace-nowrap">
+                                                                { colaborador.rol }
+                                                            </td>
+                                                            <td className="px-4 py-2 text-gray-700 whitespace-nowrap">
+                                                                { colaborador.estado ? (
+                                                                    <span className="p-1 text-white bg-green-200 rounded-md">
+                                                                        Activado
+                                                                    </span>
+                                                                ) : (
+                                                                    <span className="p-1 text-white bg-red-300 rounded-md">
+                                                                        Desactivado
+                                                                    </span>
+                                                                ) }
+                                                            </td>
 
-                                    <tbody className="divide-y divide-gray-200">
-                                        { listaColaboradores.map((colaborador, index) => (
-                                            <tr key={ colaborador._id } className="odd:bg-gray-50">
-                                                <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap">
-                                                    { colaborador.nombre }
-                                                </td>
-                                                <td className="px-4 py-2 text-gray-700 whitespace-nowrap">{ colaborador.email }</td>
-                                                <td className="px-4 py-2 text-gray-700 whitespace-nowrap">{ colaborador.rol }</td>
-                                                <td className="px-4 py-2 text-gray-700 whitespace-nowrap">
-                                                    {
-                                                        colaborador.estado ? (
-                                                            <span className="p-1 text-white bg-green-200 rounded-md">Activado</span>
-                                                        ) : (
-                                                            <span className="p-1 text-white bg-red-300 rounded-md">Desactivado</span>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                        )) }
-                                    </tbody>
-
-                                </table>
+                                                            <td className="px-4 py-2 font-medium text-left text-gray-900 cursor-pointer whitespace-nowrap" onClick={ () => router.push(`/account/edit_colaborador_admin/${colaborador._id}`) }>
+                                                                <FiEdit />
+                                                            </td>
+                                                        </tr>
+                                                    )) }
+                                                </tbody>
+                                            </table>
+                                        </>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>

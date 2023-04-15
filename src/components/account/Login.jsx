@@ -5,7 +5,7 @@ import * as Yup from "yup"
 
 const Login = () => {
   const router = useRouter();
-  
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -88,6 +88,7 @@ const Login = () => {
                     >Password</label>
                     <input
                       type="password"
+                      name="password" // agrega el atributo name
                       className="flex w-full p-3 px-3 py-2 leading-tight text-black border-2 border-gray-300 rounded-lg shadow outline-none appearance-none focus:outline-none focus:shadow-outline"
                       placeholder="Password de Usuario"
                       value={ formik.values.password }
