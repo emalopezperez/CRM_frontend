@@ -1,9 +1,12 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useFormik } from "formik"
 import * as Yup from "yup"
 
 
 const Login = () => {
+  const [notificaciones, setNotificaciones] = useState(false)
+
   const router = useRouter();
 
   const formik = useFormik({
@@ -31,6 +34,7 @@ const Login = () => {
         .then(response => response.json())
         .then(response => {
           if (response.data === undefined) {
+            setNotificaciones(true)
           }
           if (response.token) {
             localStorage.setItem('token', response.token);
@@ -46,11 +50,18 @@ const Login = () => {
   })
   return (
     <div >
+    
       <div className="flex flex-col min-h-screen pl-52 pt-26">
         <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
           <div className="rounded-md">
             <h2 className="flex justify-center my-4 font-sans text-2xl font-bold text-black">Iniciar Sesión</h2>
             <span className="flex justify-center text-sm text-gray-300">Panel administrador</span>
+
+            {
+              notificaciones ? <div className='flex justify-center mt-5 text-white '>
+              <span className='p-2 bg-red-400 rounded-md'>Cuenta no activada</span>
+              </div> : ""
+            }
             <div className="flex justify-center ">
               <div className="w-full max-w-lg ">
                 <form
