@@ -6,6 +6,7 @@ import { GoKebabHorizontal } from "react-icons/go";
 import { TiDeleteOutline, TiTickOutline } from "react-icons/ti";
 
 const ListColaboradores = () => {
+  
   const router = useRouter();
 
   const [listaColaboradores, setListaColaboradores] = useState([]);

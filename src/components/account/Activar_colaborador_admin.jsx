@@ -1,12 +1,16 @@
+import { AuthContext } from "@/contexts/AuthContext";
+import { useContext } from "react";
 import { useRouter } from "next/router";
 
+
 const Activar_colaborador_admin = () => {
+  const { data: {  token} }  = useContext(AuthContext);
+
   const router = useRouter();
   const { id} = router.query;
 
   const activarCuenta = () => {
     const apiUrl = "http://localhost:3001/api/";
-    const token = localStorage.getItem("token");
     let url = `${apiUrl}cambiar_estado_colaboradores_admin/${id}`;
   
     let data = {
