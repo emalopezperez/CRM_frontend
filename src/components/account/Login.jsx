@@ -1,15 +1,14 @@
 import { useState, useContext } from "react";
-import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import authContext from "@/context/auth/authContext";
+import Alerta from "../alertas/Alerta";
 
 const Login = () => {
   const AuthContext = useContext(authContext);
-  const { usuarioAuth } = AuthContext;
+  const { mensaje, iniciarSesion } = AuthContext;
 
   const [notificaciones, setNotificaciones] = useState(false);
-  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -25,34 +24,7 @@ const Login = () => {
         .min(6, "El pasword debe contener al menos 6 caracteres"),
     }),
     onSubmit: async (values) => {
-      const apiUrl = "http://localhost:3001/api/";
-      let data = {
-        email: values.email,
-        password: values.password,
-      };
-      await fetch(`${apiUrl}login_colaborador_admin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          if (response.data === undefined) {
-            setNotificaciones(true);
-          }
-          if (response.token) {
-            localStorage.setItem("token", response.token);
-
-            usuarioAuth('ema')
-
-            router.push("/");
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      iniciarSesion(values);
     },
   });
 
@@ -61,6 +33,7 @@ const Login = () => {
       <div className="flex flex-col min-h-screen pl-52 pt-26">
         <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
           <div className="rounded-md">
+            <div className="flex justify-center pl-42">{mensaje && <Alerta />}</div>
             <h2 className="flex justify-center my-4 font-sans text-2xl font-bold text-black">
               Iniciar Sesión
             </h2>

@@ -1,14 +1,15 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
-import { useState , useContext} from "react";
+import { useState, useContext } from "react";
 import authContext from "@/context/auth/authContext";
+import Alerta from "../alertas/Alerta";
 
 const CrearColaborador = () => {
   const AuthContext = useContext(authContext);
-  const { crearColaborador, mensaje} = AuthContext;
+  const { crearColaborador, mensaje } = AuthContext;
 
-  const [user, setUser]=useState(true)
+  const [user, setUser] = useState(true);
 
   const formik = useFormik({
     initialValues: {
@@ -25,15 +26,18 @@ const CrearColaborador = () => {
         .required("El email es obligatorio"),
     }),
     onSubmit: async (values) => {
-      crearColaborador(values)
-      console.log(mensaje)
-    }
+      crearColaborador(values);
+      console.log(mensaje);
+    },
   });
 
   return (
     <div className="flex flex-col pt-16 pl-52">
       <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
         <div className="">
+          <div className="flex justify-center pl-42">
+            {mensaje && <Alerta />}
+          </div>
           <span className="flex justify-center text-sm text-gray-300">
             Colaboradores
           </span>
