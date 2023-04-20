@@ -1,42 +1,41 @@
-import { AuthContext } from "@/contexts/AuthContext";
-import { useContext } from "react";
 import { useRouter } from "next/router";
 
-
 const Activar_colaborador_admin = () => {
-  const { data: {  token} }  = useContext(AuthContext);
+  const {
+    data: { token },
+  } = useContext(AuthContext);
 
   const router = useRouter();
-  const { id} = router.query;
+  const { id } = router.query;
 
   const activarCuenta = () => {
     const apiUrl = "http://localhost:3001/api/";
+    const token = localStorage.getItem("token");
     let url = `${apiUrl}cambiar_estado_colaboradores_admin/${id}`;
-  
+
     let data = {
-      estado: true
-    }
-  
+      estado: true,
+    };
+
     fetch(url, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify(data) 
+      body: JSON.stringify(data),
     })
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        
+
         router.push(`/account/lista_colaboradores_admin`);
       })
       .catch((error) => {
         console.error(error);
       });
   };
-  
-  
+
   return (
     <div className="flex justify-center pb-16 pt-36 pl-52">
       <div className="flex flex-col max-w-md gap-2 p-6 rounded-md shadow-md dark:bg-gray-900 dark:text-gray-100">

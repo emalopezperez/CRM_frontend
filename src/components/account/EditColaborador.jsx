@@ -3,13 +3,9 @@ import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import Cookies from "js-cookie";
-import { AuthContext } from "@/contexts/AuthContext";
 
 
 const EditColaborador = () => {
-  const { data: {  token} }  = useContext(AuthContext);
-
   const router = useRouter();
   const { id } = router.query;
 
@@ -17,6 +13,7 @@ const EditColaborador = () => {
 
   const llamadoApi = () => {
     const apiUrl = "http://localhost:3001/api/";
+    const token = localStorage.getItem("token");
     let url = `${apiUrl}obtener_colaboradores_admin/${id}`;
 
     fetch(url, {

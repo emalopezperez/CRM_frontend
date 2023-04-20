@@ -1,17 +1,15 @@
-import { AuthContext } from "@/contexts/AuthContext";
-import { useContext } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useState , useContext} from "react";
+import authContext from "@/context/auth/authContext";
 
 const CrearColaborador = () => {
-  const {
-    data: { token, logout, user},
-  } = useContext(AuthContext);
+  const AuthContext = useContext(authContext);
+  const { crearColaborador, mensaje} = AuthContext;
 
+  const [user, setUser]=useState(true)
 
-  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       nombre: "",
@@ -27,34 +25,9 @@ const CrearColaborador = () => {
         .required("El email es obligatorio"),
     }),
     onSubmit: async (values) => {
-      const apiUrl = "http://localhost:3001/api/";
-      
-
-      let data = {
-        email: values.email,
-        nombre: values.nombre,
-        apellido: values.apellido,
-        rol: values.cargo,
-      };
-
-      await fetch(`${apiUrl}registro_colaborador_admin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((response) => {
-          console.log(response);
-
-          router.push("/account/lista_colaboradores_admin");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
+      crearColaborador(values)
+      console.log(mensaje)
+    }
   });
 
   return (

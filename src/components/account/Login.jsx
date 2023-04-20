@@ -2,10 +2,11 @@ import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { AuthContext } from "@/contexts/AuthContext";
+import authContext from "@/context/auth/authContext";
 
 const Login = () => {
-  const { data: {  token, logear} }  = useContext(AuthContext);
+  const AuthContext = useContext(authContext);
+  const { usuarioAuth } = AuthContext;
 
   const [notificaciones, setNotificaciones] = useState(false);
   const router = useRouter();
@@ -42,7 +43,9 @@ const Login = () => {
             setNotificaciones(true);
           }
           if (response.token) {
-            logear(response.token);
+            localStorage.setItem("token", response.token);
+
+            usuarioAuth('ema')
 
             router.push("/");
           }
