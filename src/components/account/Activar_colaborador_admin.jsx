@@ -1,16 +1,16 @@
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import authContext from "@/context/auth/authContext";
 
 const Activar_colaborador_admin = () => {
-  const {
-    data: { token },
-  } = useContext(AuthContext);
-
   const router = useRouter();
   const { id } = router.query;
 
+  const AuthContext = useContext(authContext);
+  const { token } = AuthContext;
+
   const activarCuenta = () => {
     const apiUrl = "http://localhost:3001/api/";
-    const token = localStorage.getItem("token");
     let url = `${apiUrl}cambiar_estado_colaboradores_admin/${id}`;
 
     let data = {
@@ -27,8 +27,6 @@ const Activar_colaborador_admin = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
-
         router.push(`/account/lista_colaboradores_admin`);
       })
       .catch((error) => {

@@ -1,14 +1,15 @@
 import {
   USUARIO_AUTENTICADO,
-  COLABORADOR_REGISTRADO_EXITOSO,
   COLABORADOR_REGISTRADO_ERROR,
   LOGIN_EXITOSO,
   LOGIN_ERROR,
+  COLABORADOR_REGISTRADO_EXITOSO_MENSAJE,
+  CERRAR_SESION,
 } from "../../types";
 
 export default (state, action) => {
   switch (action.type) {
-    case COLABORADOR_REGISTRADO_EXITOSO:
+    case COLABORADOR_REGISTRADO_EXITOSO_MENSAJE:
     case COLABORADOR_REGISTRADO_ERROR:
     case LOGIN_ERROR:
       return {
@@ -24,12 +25,21 @@ export default (state, action) => {
         autenticado: true,
       };
 
-       case USUARIO_AUTENTICADO:
-        localStorage.setItem('usuario', JSON.stringify(action.payload))
-        return{
-          ...state,
-          usuario: action.payload,
-        }
+    case USUARIO_AUTENTICADO:
+      localStorage.setItem("usuario", JSON.stringify(action.payload));
+      return {
+        ...state,
+        usuario: action.payload,
+      };
+
+    case CERRAR_SESION:
+      localStorage.removeItem("token");
+      localStorage.removeItem("usuario");
+      return {
+        ...state,
+        usuario: null,
+        token: null,
+      };
 
     default:
       return state;

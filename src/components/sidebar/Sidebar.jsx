@@ -4,9 +4,9 @@ import authContext from "@/context/auth/authContext";
 
 const Sidebar = () => {
   const AuthContext = useContext(authContext);
-  const { usuario } = AuthContext;
+  const { usuario, cerrarSesion } = AuthContext;
 
-  const [infoUsuario, setInfoUsuario] = useState({});
+  const [infoUsuario, setInfoUsuario] = useState(null);
 
   useEffect(() => {
     if (usuario) {
@@ -14,8 +14,6 @@ const Sidebar = () => {
         nombre: usuario.nombre,
         email: usuario.email,
       });
-    } else {
-      setInfoUsuario(null);
     }
   }, []);
 
@@ -167,7 +165,7 @@ const Sidebar = () => {
             <span className="text-sm font-medium"> Categorias </span>
           </Link>
           <Link
-            href="#"
+            href="/productos/registro_producto"
             className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +184,7 @@ const Sidebar = () => {
             <span className="text-sm font-medium"> Productos </span>
           </Link>
           <Link
-            href="#"
+            href=""
             className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -260,49 +258,10 @@ const Sidebar = () => {
             </summary>
 
             <nav aria-label="Account Nav" className="flex flex-col px-4 mt-2">
-              <Link
-                href="#"
-                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 opacity-75"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
-                  />
-                </svg>
-
-                <span className="text-sm font-medium"> Details </span>
-              </Link>
-
-              <Link
-                href="#"
-                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 opacity-75"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-
-                <span className="text-sm font-medium"> Security </span>
-              </Link>
-
-              <form action="/logout">
+              <form action="">
                 <button
                   type="submit"
+                  onClick={cerrarSesion}
                   className="flex items-center w-full gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -328,7 +287,7 @@ const Sidebar = () => {
 
       {infoUsuario ? (
         <div className="sticky inset-x-0 bottom-0 text-gray-400 border-t border-gray-100">
-          <Link href="#" className="flex items-center gap-2 p-4">
+          <div className="flex items-center gap-2 p-4">
             <img
               alt="Man"
               src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
@@ -343,7 +302,7 @@ const Sidebar = () => {
                 <span>{infoUsuario.email} </span>
               </p>
             </div>
-          </Link>
+          </div>
         </div>
       ) : (
         <Link href="/account/login_colaborador_admin">

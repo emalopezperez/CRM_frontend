@@ -7,7 +7,8 @@ import Alerta from "../alertas/Alerta";
 
 const CrearColaborador = () => {
   const AuthContext = useContext(authContext);
-  const { crearColaborador, mensaje, usuario} = AuthContext;
+  const { crearColaborador, mensaje, usuario} =
+    AuthContext;
 
   const [colaboradorAuth, setColaboradorAuth] = useState(false);
 
@@ -33,7 +34,6 @@ const CrearColaborador = () => {
     }),
     onSubmit: async (values) => {
       crearColaborador(values);
-      console.log(mensaje);
     },
   });
 

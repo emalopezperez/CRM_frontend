@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiEdit } from "react-icons/fi";
 import { GoKebabHorizontal } from "react-icons/go";
 import { TiDeleteOutline, TiTickOutline } from "react-icons/ti";
+import authContext from "@/context/auth/authContext";
 
 const ListColaboradores = () => {
-  
   const router = useRouter();
+
+  const AuthContext = useContext(authContext);
+  const { token } = AuthContext;
 
   const [listaColaboradores, setListaColaboradores] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
   const llamadoApi = () => {
     const apiUrl = "http://localhost:3001/api/";
-    const token = localStorage.getItem("token");
     let filtro = searchValue;
     let url = `${apiUrl}lista_colaboradores_admin/${filtro}`;
 

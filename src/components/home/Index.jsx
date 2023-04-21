@@ -3,12 +3,9 @@ import authContext from "@/context/auth/authContext"
 
 const Index = () => {
   const AuthContext = useContext(authContext);
-  const { usuario } = AuthContext
+  const {  } = AuthContext
 
-  useEffect(()=>{
-    console.log(usuario)
-  }, [])
-
+  
   return (
     <div>Index</div>
   )

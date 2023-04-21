@@ -1,24 +1,28 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
+import { useRouter } from "next/router";
 import authContext from "./authContext";
 import authReducer from "./authReducer";
 
 import {
-  COLABORADOR_REGISTRADO_EXITOSO,
+  COLABORADOR_REGISTRADO_EXITOSO_MENSAJE,
   COLABORADOR_REGISTRADO_ERROR,
   LOGIN_EXITOSO,
   LOGIN_ERROR,
   USUARIO_AUTENTICADO,
+  CERRAR_SESION,
 } from "../../types";
 
 const AuthState = ({ children }) => {
+  const router = useRouter();
+
   //State inicial
   const initialState = {
     token: typeof window !== "undefined" ? localStorage.getItem("token") : "",
     autenticado: null,
     usuario:
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("usuario"))
-      : null,
+      typeof window !== "undefined"
+        ? JSON.parse(localStorage.getItem("usuario"))
+        : null,
     mensaje: null,
   };
 
@@ -29,7 +33,7 @@ const AuthState = ({ children }) => {
   const crearColaborador = async (values) => {
     try {
       const apiUrl = "http://localhost:3001/api/";
-      const token = localStorage.getItem("token");
+      const token = state.token;
 
       let data = {
         email: values.email,
@@ -51,8 +55,8 @@ const AuthState = ({ children }) => {
 
       if (responseData.success) {
         dispatch({
-          type: COLABORADOR_REGISTRADO_EXITOSO,
-          payload: responseData.message,
+          type: COLABORADOR_REGISTRADO_EXITOSO_MENSAJE,
+          payload: responseData.menssage,
         });
       } else {
         dispatch({
@@ -60,6 +64,8 @@ const AuthState = ({ children }) => {
           payload: responseData.message,
         });
       }
+
+      router.push("/account/lista_colaboradores_admin");
     } catch (error) {
       console.error(error);
 
@@ -115,6 +121,13 @@ const AuthState = ({ children }) => {
     }
   };
 
+  // Cerrar la sesión
+  const cerrarSesion = () => {
+    dispatch({
+      type: CERRAR_SESION,
+    });
+  };
+
   return (
     <authContext.Provider
       value={{
@@ -124,6 +137,7 @@ const AuthState = ({ children }) => {
         mensaje: state.mensaje,
         iniciarSesion,
         crearColaborador,
+        cerrarSesion,
       }}>
       {children}
     </authContext.Provider>
