@@ -1,15 +1,21 @@
+import { useState, useContext, useEffect } from "react";
+import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Link from "next/link";
-import { useState, useContext } from "react";
 import authContext from "@/context/auth/authContext";
 import Alerta from "../alertas/Alerta";
 
 const CrearColaborador = () => {
   const AuthContext = useContext(authContext);
-  const { crearColaborador, mensaje } = AuthContext;
+  const { crearColaborador, mensaje, usuario} = AuthContext;
 
-  const [user, setUser] = useState(true);
+  const [colaboradorAuth, setColaboradorAuth] = useState(false);
+
+  useEffect(() => {
+    if (usuario) {
+      setColaboradorAuth(!colaboradorAuth);
+    }
+  }, [usuario]);
 
   const formik = useFormik({
     initialValues: {
@@ -58,7 +64,7 @@ const CrearColaborador = () => {
           </div>
           <div className="flex justify-center ">
             <div className="w-full max-w-lg ">
-              {user ? (
+              {colaboradorAuth ? (
                 <form
                   className="px-8 pt-6 pb-8 mb-4 rounded shadow-md"
                   onSubmit={formik.handleSubmit}>

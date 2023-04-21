@@ -1,14 +1,23 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import authContext from "@/context/auth/authContext";
 import Alerta from "../alertas/Alerta";
 
 const Login = () => {
+  const router = useRouter();
+  
   const AuthContext = useContext(authContext);
-  const { mensaje, iniciarSesion } = AuthContext;
+  const { mensaje, iniciarSesion, autenticado } = AuthContext;
 
-  const [notificaciones, setNotificaciones] = useState(false);
+  useEffect(() => {
+    if (autenticado) {
+      
+      router.push("/account/lista_colaboradores_admin");
+    }
+    
+  }, [autenticado]);
 
   const formik = useFormik({
     initialValues: {
@@ -33,7 +42,9 @@ const Login = () => {
       <div className="flex flex-col min-h-screen pl-52 pt-26">
         <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
           <div className="rounded-md">
-            <div className="flex justify-center pl-42">{mensaje && <Alerta />}</div>
+            <div className="flex justify-center pl-42">
+              {mensaje && <Alerta />}
+            </div>
             <h2 className="flex justify-center my-4 font-sans text-2xl font-bold text-black">
               Iniciar Sesión
             </h2>
@@ -41,7 +52,7 @@ const Login = () => {
               Panel administrador
             </span>
 
-            {notificaciones ? (
+            {autenticado ? (
               <div className="flex justify-center mt-5 text-white ">
                 <span className="p-2 bg-red-400 rounded-md">
                   Cuenta no activada

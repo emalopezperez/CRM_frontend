@@ -1,22 +1,35 @@
-import Link from "next/link"
-
+import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import authContext from "@/context/auth/authContext";
 
 const Sidebar = () => {
+  const AuthContext = useContext(authContext);
+  const { usuario } = AuthContext;
+
+  const [infoUsuario, setInfoUsuario] = useState({});
+
+  useEffect(() => {
+    if (usuario) {
+      setInfoUsuario({
+        nombre: usuario.nombre,
+        email: usuario.email,
+      });
+    } else {
+      setInfoUsuario(null);
+    }
+  }, []);
+
   return (
     <div
-      className='w-[80%] md:w-[40%] top-0 
-        lg:w-80 h-full overflow-y-scroll text-gray-400 transition-all bg-[#181A20] p-4 lg:p-0 shadow-2xl lg:shadow-none z-50 fixed'>
+      className="w-[80%] md:w-[40%] top-0 
+        lg:w-80 h-full overflow-y-scroll text-gray-400 transition-all bg-[#181A20] p-4 lg:p-0 shadow-2xl lg:shadow-none z-50 fixed">
       <div className="px-4 py-6">
-        <span
-          className="grid w-32 h-10 text-xl font-bold text-white rounded-lg place-content-center"
-        >
+        <span className="grid w-32 h-10 text-xl font-bold text-white rounded-lg place-content-center">
           Logo
         </span>
         <nav aria-label="Main Nav" className="flex flex-col mt-6 space-y-1">
           <details className="group [&_summary::-webkit-details-marker]:hidden">
-            <summary
-              className="flex items-center justify-between px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700"
-            >
+            <summary className="flex items-center justify-between px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
               <div className="flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -24,8 +37,7 @@ const Sidebar = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth="2"
-                >
+                  strokeWidth="2">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -41,8 +53,7 @@ const Sidebar = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5"
                   viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
+                  fill="currentColor">
                   <path
                     fillRule="evenodd"
                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -55,16 +66,14 @@ const Sidebar = () => {
             <nav aria-label="Teams Nav" className="flex flex-col px-4 mt-2">
               <Link
                 href="#"
-                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-              >
+                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5 opacity-75"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth="2"
-                >
+                  strokeWidth="2">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -77,16 +86,14 @@ const Sidebar = () => {
 
               <Link
                 href="#"
-                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-              >
+                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5 opacity-75"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth="2"
-                >
+                  strokeWidth="2">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -99,16 +106,14 @@ const Sidebar = () => {
 
               <Link
                 href="#"
-                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-              >
+                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5 opacity-75"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth="2"
-                >
+                  strokeWidth="2">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -123,16 +128,14 @@ const Sidebar = () => {
 
           <Link
             href="/account/lista_colaboradores_admin"
-            className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-sm hover:bg-gray-100 hover:text-gray-700"
-          >
+            className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-sm hover:bg-gray-100 hover:text-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5 opacity-75"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth="2"
-            >
+              strokeWidth="2">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -146,16 +149,14 @@ const Sidebar = () => {
           <span className="pt-6"></span>
           <Link
             href="#"
-            className="flex items-center gap-2 px-4 py-2 text-gray-500 border-t border-gray-100 rounded-sm hover:bg-gray-100 hover:text-gray-700"
-          >
+            className="flex items-center gap-2 px-4 py-2 text-gray-500 border-t border-gray-100 rounded-sm hover:bg-gray-100 hover:text-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5 opacity-75"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth="2"
-            >
+              strokeWidth="2">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -167,16 +168,14 @@ const Sidebar = () => {
           </Link>
           <Link
             href="#"
-            className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-          >
+            className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5 opacity-75"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth="2"
-            >
+              strokeWidth="2">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -188,16 +187,14 @@ const Sidebar = () => {
           </Link>
           <Link
             href="#"
-            className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-          >
+            className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5 opacity-75"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth="2"
-            >
+              strokeWidth="2">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -210,16 +207,14 @@ const Sidebar = () => {
 
           <Link
             href="#"
-            className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-          >
+            className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5 opacity-75"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth="2"
-            >
+              strokeWidth="2">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -230,9 +225,7 @@ const Sidebar = () => {
             <span className="text-sm font-medium"> Ventas </span>
           </Link>
           <details className="group [&_summary::-webkit-details-marker]:hidden">
-            <summary
-              className="flex items-center justify-between px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700"
-            >
+            <summary className="flex items-center justify-between px-4 py-2 text-gray-500 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-700">
               <div className="flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -240,8 +233,7 @@ const Sidebar = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth="2"
-                >
+                  strokeWidth="2">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -257,8 +249,7 @@ const Sidebar = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5"
                   viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
+                  fill="currentColor">
                   <path
                     fillRule="evenodd"
                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -271,16 +262,14 @@ const Sidebar = () => {
             <nav aria-label="Account Nav" className="flex flex-col px-4 mt-2">
               <Link
                 href="#"
-                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-              >
+                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5 opacity-75"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth="2"
-                >
+                  strokeWidth="2">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -293,16 +282,14 @@ const Sidebar = () => {
 
               <Link
                 href="#"
-                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-              >
+                className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5 opacity-75"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth="2"
-                >
+                  strokeWidth="2">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -316,16 +303,14 @@ const Sidebar = () => {
               <form action="/logout">
                 <button
                   type="submit"
-                  className="flex items-center w-full gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700"
-                >
+                  className="flex items-center w-full gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-5 h-5 opacity-75"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    strokeWidth="2"
-                  >
+                    strokeWidth="2">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -341,24 +326,34 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      <div className="sticky inset-x-0 bottom-0 text-gray-400 border-t border-gray-100">
-        <Link href="#" className="flex items-center gap-2 p-4">
-          <img
-            alt="Man"
-            src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-            className="object-cover w-10 h-10 rounded-full"
-          />
+      {infoUsuario ? (
+        <div className="sticky inset-x-0 bottom-0 text-gray-400 border-t border-gray-100">
+          <Link href="#" className="flex items-center gap-2 p-4">
+            <img
+              alt="Man"
+              src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+              className="object-cover w-10 h-10 rounded-full"
+            />
 
-          <div>
-            <p className="text-xs">
-              <strong className="block font-medium">User</strong>
-              <span>user@user.com </span>
-            </p>
-          </div>
+            <div>
+              <p className="text-xs">
+                <strong className="block font-medium">
+                  {infoUsuario.nombre}
+                </strong>
+                <span>{infoUsuario.email} </span>
+              </p>
+            </div>
+          </Link>
+        </div>
+      ) : (
+        <Link href="/account/login_colaborador_admin">
+          <button className="p-2 mt-20 text-black bg-white rounded-md hover:bg-gray-400">
+            iniciar sesion
+          </button>
         </Link>
-      </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

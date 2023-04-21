@@ -1,5 +1,4 @@
 import { useReducer } from "react";
-import { useRouter } from "next/router";
 import authContext from "./authContext";
 import authReducer from "./authReducer";
 
@@ -8,16 +7,18 @@ import {
   COLABORADOR_REGISTRADO_ERROR,
   LOGIN_EXITOSO,
   LOGIN_ERROR,
+  USUARIO_AUTENTICADO,
 } from "../../types";
 
 const AuthState = ({ children }) => {
-  const router = useRouter();
-
   //State inicial
   const initialState = {
-    token: "",
+    token: typeof window !== "undefined" ? localStorage.getItem("token") : "",
     autenticado: null,
-    usuario: null,
+    usuario:
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("usuario"))
+      : null,
     mensaje: null,
   };
 
@@ -29,14 +30,14 @@ const AuthState = ({ children }) => {
     try {
       const apiUrl = "http://localhost:3001/api/";
       const token = localStorage.getItem("token");
-  
+
       let data = {
         email: values.email,
         nombre: values.nombre,
         apellido: values.apellido,
         rol: values.cargo,
       };
-  
+
       const response = await fetch(`${apiUrl}registro_colaborador_admin`, {
         method: "POST",
         headers: {
@@ -45,16 +46,14 @@ const AuthState = ({ children }) => {
         },
         body: JSON.stringify(data),
       });
-  
+
       const responseData = await response.json();
-  
+
       if (responseData.success) {
         dispatch({
           type: COLABORADOR_REGISTRADO_EXITOSO,
           payload: responseData.message,
         });
-        
-        router.push("/account/lista_colaboradores_admin");
       } else {
         dispatch({
           type: COLABORADOR_REGISTRADO_ERROR,
@@ -63,14 +62,13 @@ const AuthState = ({ children }) => {
       }
     } catch (error) {
       console.error(error);
-  
+
       dispatch({
         type: COLABORADOR_REGISTRADO_ERROR,
         payload: error.message,
       });
     }
   };
-  
 
   //Autenticar usuario
   const iniciarSesion = async (values) => {
@@ -90,14 +88,18 @@ const AuthState = ({ children }) => {
       const responseData = await response.json();
 
       if (responseData.token) {
-        localStorage.setItem("token", responseData.token);
-
         dispatch({
           type: LOGIN_EXITOSO,
-          payload: responseData.menssage,
+          payload: responseData.token,
+          usuario: responseData.usuario,
         });
+      }
 
-        router.push("/");
+      if (responseData.usuario) {
+        dispatch({
+          type: USUARIO_AUTENTICADO,
+          payload: responseData.usuario,
+        });
       } else {
         const message = responseData.message;
         dispatch({

@@ -1,11 +1,11 @@
+import Index from "@/components/home/Index"
 import Layout from "@/layout/Layout"
 
 
 const home = () => {
   return (
     <Layout classNameName="">
-      <div className="text-black">
-      </div>
+      <Index/>
     </Layout>
   )
 }
