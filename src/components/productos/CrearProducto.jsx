@@ -12,10 +12,7 @@ const CrearProducto = () => {
   const { usuario, token } = AuthContext;
 
   const ProductContext = useContext(productContext);
-
-  const { mensaje_archivo } = ProductContext;
-
-  console.log(mensaje_archivo);
+  const { mensaje_archivo, crearProducto, obtenerImagenProducto } = ProductContext;
 
   const [colaboradorAuth, setColaboradorAuth] = useState(false);
 
@@ -42,7 +39,7 @@ const CrearProducto = () => {
       contenido: Yup.string().required("La descripcion es obligatorio"),
     }),
     onSubmit: async (values) => {
-      console.log(values);
+      crearProducto(values, token);
     },
   });
 

@@ -2,10 +2,9 @@ import React, { useCallback, useState, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import productContext from "@/context/products/productContext";
 
-const Dropzone = ({ token }) => {
+const Dropzone = () => {
   const ProductContext = useContext(productContext);
-
-  const { mostrarAlerta } = ProductContext;
+  const { mostrarAlerta , obtenerImagenProducto} = ProductContext;
 
   const [predefinedImageDisplayed, setPredefinedImageDisplayed] =
     useState(false);
@@ -13,12 +12,12 @@ const Dropzone = ({ token }) => {
   const onDrop = useCallback(async (acceptedFiles) => {
     try {
       const formData = new FormData();
-      formData.append("imagen", acceptedFiles[0]);
+      formData.append("portada", acceptedFiles[0]);
 
-      const imagen = formData.get("imagen");
-      const nombreArchivo = imagen.name;
-      const tamanoArchivo = imagen.size;
-      const tipoArchivo = imagen.type;
+      const portada = formData.get("portada");
+      const nombreArchivo = portada.name;
+      const tamanoArchivo = portada.size;
+      const tipoArchivo = portada.type;
 
       if (tamanoArchivo <= 1000000) {
         if (
@@ -27,7 +26,7 @@ const Dropzone = ({ token }) => {
           tipoArchivo == "image/webp" ||
           tipoArchivo == "image/jpg"
         ) {
-          mostrarAlerta("Enviando imagen");
+          obtenerImagenProducto(portada)
 
           // Mostrar imagen predefinida
           setPredefinedImageDisplayed(true);
