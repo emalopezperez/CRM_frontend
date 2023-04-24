@@ -1,7 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useContext } from "react";
 import { useDropzone } from "react-dropzone";
+import productContext from "@/context/products/productContext";
 
 const Dropzone = ({ token }) => {
+  const ProductContext = useContext(productContext);
+
+  const { mostrarAlerta } = ProductContext;
+
   const [predefinedImageDisplayed, setPredefinedImageDisplayed] =
     useState(false);
 
@@ -22,15 +27,15 @@ const Dropzone = ({ token }) => {
           tipoArchivo == "image/webp" ||
           tipoArchivo == "image/jpg"
         ) {
-          console.log("subir");
+          mostrarAlerta("Enviando imagen");
 
           // Mostrar imagen predefinida
           setPredefinedImageDisplayed(true);
         } else {
-          console.log("Formato del archivo no aceptado");
+          mostrarAlerta("Formato del archivo no aceptado");
         }
       } else {
-        console.log("Su imagen supera el limite de peso");
+        mostrarAlerta("Su imagen supera los limites");
       }
     } catch (error) {
       console.log(error);
@@ -79,7 +84,7 @@ const Dropzone = ({ token }) => {
             </div>
           )}
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            SVG, PNG, JPG  (MAX. 800x400px)
+            SVG, PNG, JPG (MAX. 800x400px)
           </p>
         </div>
         <input

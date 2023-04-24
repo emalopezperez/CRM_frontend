@@ -43,7 +43,7 @@ const Login = () => {
         <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
           <div className="rounded-md">
             <div className="flex justify-center pl-42">
-              {mensaje && <Alerta />}
+              {mensaje && <Alerta mensaje={mensaje} />}
             </div>
             <h2 className="flex justify-center my-4 font-sans text-2xl font-bold text-black">
               Iniciar Sesión

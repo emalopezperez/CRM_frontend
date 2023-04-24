@@ -7,8 +7,7 @@ import Alerta from "../alertas/Alerta";
 
 const CrearColaborador = () => {
   const AuthContext = useContext(authContext);
-  const { crearColaborador, mensaje, usuario} =
-    AuthContext;
+  const { crearColaborador, mensaje, usuario } = AuthContext;
 
   const [colaboradorAuth, setColaboradorAuth] = useState(false);
 
@@ -42,7 +41,7 @@ const CrearColaborador = () => {
       <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
         <div className="">
           <div className="flex justify-center pl-42">
-            {mensaje && <Alerta />}
+            {mensaje && <Alerta mensaje={mensaje} />}
           </div>
           <span className="flex justify-center text-sm text-gray-300">
             Colaboradores

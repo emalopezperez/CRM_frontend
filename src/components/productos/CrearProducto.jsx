@@ -1,13 +1,21 @@
 import { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import authContext from "@/context/auth/authContext";
+import productContext from "@/context/products/productContext";
+import Dropzone from "../dropzone/Dropzone";
+import Alerta from "../alertas/Alerta";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Dropzone from "../dropzone/Dropzone";
 
 const CrearProducto = () => {
   const AuthContext = useContext(authContext);
   const { usuario, token } = AuthContext;
+
+  const ProductContext = useContext(productContext);
+
+  const { mensaje_archivo } = ProductContext;
+
+  console.log(mensaje_archivo);
 
   const [colaboradorAuth, setColaboradorAuth] = useState(false);
 
@@ -42,6 +50,7 @@ const CrearProducto = () => {
     <div className="flex flex-col pt-16 pl-52">
       <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
         <div className="">
+          {mensaje_archivo && <Alerta mensaje={mensaje_archivo} />}
           <div className="flex justify-center pl-42"></div>
           <span className="flex justify-center text-sm text-gray-300">
             Productos
