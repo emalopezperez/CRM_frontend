@@ -12,24 +12,24 @@ const CrearProducto = () => {
   const { usuario, token } = AuthContext;
 
   const ProductContext = useContext(productContext);
-  const { mensaje_archivo, crearProducto, obtenerImagenProducto } = ProductContext;
+  const { mensaje_archivo, crearProducto, mensaje_producto } = ProductContext;
 
   const [colaboradorAuth, setColaboradorAuth] = useState(false);
 
   useEffect(() => {
-    if (usuario) {
+    if (token) {
       setColaboradorAuth(!colaboradorAuth);
     }
-  }, [usuario]);
+  }, [token]);
 
   const formik = useFormik({
     initialValues: {
       titulo: "",
       precio: "",
       contenido: "",
-      publicar: false,
+      estado: false,
       descuento: false,
-      categoria: "administrador",
+      categoria: "",
     },
     validationSchema: Yup.object({
       titulo: Yup.string().required("El titulo es obligatorio"),
@@ -48,6 +48,7 @@ const CrearProducto = () => {
       <div className="w-full m-auto mx-auto text-white shadow-md shadow-white rounded-xl lg:p-4 ">
         <div className="">
           {mensaje_archivo && <Alerta mensaje={mensaje_archivo} />}
+          {mensaje_producto && <Alerta mensaje={mensaje_producto} />}
           <div className="flex justify-center pl-42"></div>
           <span className="flex justify-center text-sm text-gray-300">
             Productos
@@ -57,7 +58,7 @@ const CrearProducto = () => {
           </h2>
           <div className="flex justify-center gap-6 mt-12 text-sm text-black">
             <Link
-              href="/account/lista_colaboradores_admin"
+              href="/productos/lista_productos"
               className="p-1 border rounded-md cursor-pointer hover:bg-gray-200">
               Todos los productos
             </Link>
@@ -173,11 +174,12 @@ const CrearProducto = () => {
                     <label className="relative inline-flex items-center m-2 cursor-pointer">
                       <input
                         type="checkbox"
-                        name="publicar"
-                        checked={formik.values.publicar}
+                        name="estado"
+                        value=""
+                        className="sr-only peer"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="sr-only peer"
+                        checked={formik.values.estado}
                       />
                       <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                       <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-500">

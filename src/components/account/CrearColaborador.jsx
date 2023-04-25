@@ -7,15 +7,15 @@ import Alerta from "../alertas/Alerta";
 
 const CrearColaborador = () => {
   const AuthContext = useContext(authContext);
-  const { crearColaborador, mensaje, usuario } = AuthContext;
+  const { crearColaborador, mensaje, usuario, token } = AuthContext;
 
   const [colaboradorAuth, setColaboradorAuth] = useState(false);
 
   useEffect(() => {
-    if (usuario) {
+    if (token) {
       setColaboradorAuth(!colaboradorAuth);
     }
-  }, [usuario]);
+  }, [token]);
 
   const formik = useFormik({
     initialValues: {

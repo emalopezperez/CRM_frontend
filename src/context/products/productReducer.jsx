@@ -18,6 +18,18 @@ export default (state, action) => {
         ...state,
         mensaje_archivo: null,
       };
+
+    case PRODUCTO_ERROR:
+      return {
+        ...state,
+        mensaje_producto: action.payload,
+      };
+
+    case PRODUCTO_CREADO_EXITOSO:
+      return {
+        ...state,
+        mensaje_producto: action.payload,
+      };
     default:
       return state;
   }

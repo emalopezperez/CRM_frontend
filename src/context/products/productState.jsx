@@ -1,4 +1,5 @@
 import { useReducer, useState } from "react";
+import { useRouter } from "next/router";
 import productContext from "./productContext";
 import productReducer from "./productReducer";
 
@@ -10,10 +11,13 @@ import {
 } from "../../types";
 
 const ProductState = ({ children }) => {
+  const router = useRouter();
+
   const [imagenProducto, setImagenProducto] = useState(null);
 
   const initialState = {
     mensaje_archivo: null,
+    mensaje_producto: null,
   };
 
   const [state, dispatch] = useReducer(productReducer, initialState);
@@ -41,44 +45,59 @@ const ProductState = ({ children }) => {
       formData.append("titulo", values.titulo);
       formData.append("contenido", values.contenido);
       formData.append("precio", values.precio);
-      //formData.append('categoria', values.categoria);
+      formData.append("categoria", values.categoria);
       formData.append("descuento", values.descuento);
-      formData.append("publicar", values.publicar);
+      formData.append("estado", values.estado);
       if (imagenProducto) {
         formData.append("portada", imagenProducto);
       }
 
       const apiUrl = "http://localhost:3001/api/";
 
-      const response = await fetch(`${apiUrl}registro_producto_admin`, {
+      let response = await fetch(`${apiUrl}registro_producto_admin`, {
         method: "POST",
         headers: {
           Authorization: token,
         },
         body: formData,
       });
+      response = await response.json();
 
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("Producto creado correctamente:", responseData);
+      if (response.data) {
+        dispatch({
+          type: PRODUCTO_CREADO_EXITOSO,
+          payload: response.message,
+        });
+
+        router.push("/productos/lista_productos");
       } else {
-        console.log(
-          "No se pudo crear el producto. Código de estado:",
-          response.status
-        );
+        dispatch({
+          type: PRODUCTO_ERROR,
+          payload: response.message,
+        });
       }
     } catch (error) {
       console.log(error);
+      dispatch({
+        type: PRODUCTO_ERROR,
+        payload: error.message,
+      });
     }
   };
+
+  const listarProductos = async() =>{
+    
+  }
 
   return (
     <productContext.Provider
       value={{
         mensaje_archivo: state.mensaje_archivo,
+        mensaje_producto: state.mensaje_producto,
         mostrarAlerta,
         obtenerImagenProducto,
         crearProducto,
+        listarProductos
       }}>
       {children}
     </productContext.Provider>

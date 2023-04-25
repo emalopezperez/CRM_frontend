@@ -165,7 +165,7 @@ const Sidebar = () => {
             <span className="text-sm font-medium"> Categorias </span>
           </Link>
           <Link
-            href="/productos/registro_producto"
+            href="/productos/lista_productos"
             className="flex items-center gap-2 px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
