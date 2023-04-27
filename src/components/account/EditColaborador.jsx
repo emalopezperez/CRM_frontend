@@ -27,7 +27,7 @@ const EditColaborador = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        setColaboradorObtenido(response);
+        setColaboradorObtenido(response.colaborador);
       })
       .catch((error) => {
         console.error(error);

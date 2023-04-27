@@ -54,6 +54,7 @@ const EditarProducto = () => {
       estado: "",
       descuento: "",
       categoria: "",
+      variedad: "",
     },
     validationSchema: Yup.object({
       precio: Yup.number().min(0, "El precio debe ser mayor o igual a cero"),
@@ -72,6 +73,7 @@ const EditarProducto = () => {
       estado: productoObtenido.estado,
       descuento: productoObtenido.descuento,
       categoria: productoObtenido.categoria,
+      variedad: productoObtenido.str_variedad,
     });
   }, [productoObtenido]);
 
@@ -110,25 +112,25 @@ const EditarProducto = () => {
                     <Dropzone token={token} />
                   </div>
 
-                  <div className="mb-4">
-                    <label
-                      className="block mb-2 text-sm text-gray-500"
-                      htmlFor="titulo">
-                      Titulo del producto
-                    </label>
-                    <input
-                      type="titulo"
-                      className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                      id="titulo"
-                      placeholder="Titulo del producto"
-                      defaultValue={productoObtenido.titulo}
-                      value={formik.values.titulo}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-                  </div>
+                  <div className="grid gap-4 mb-4 md:grid-cols-2">
+                    <div>
+                      <label
+                        className="block mb-2 text-sm text-gray-500"
+                        htmlFor="titulo">
+                        Titulo del producto
+                      </label>
+                      <input
+                        type="titulo"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="titulo"
+                        placeholder="Titulo del producto"
+                        defaultValue={productoObtenido.titulo}
+                        value={formik.values.titulo}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                    </div>
 
-                  <div className="grid w-full gap-4 py-2 mt-6 md:grid-cols-2">
                     <div>
                       <label
                         htmlFor="cargo"
@@ -148,6 +150,26 @@ const EditarProducto = () => {
                         <option value="tecnologia">Tecnología</option>
                         <option value="hogar">Hogar</option>
                       </select>
+                    </div>
+                  </div>
+
+                  <div className="grid w-full gap-4 py-2 mt-6 md:grid-cols-2">
+                    <div>
+                      <label
+                        className="block mb-2 text-sm text-gray-500"
+                        htmlFor="variedad">
+                        Variedad
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="variedad"
+                        placeholder="Variedad del producto"
+                        defaultValue={productoObtenido.str_variedad}
+                        value={formik.values.variedad}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
                     </div>
 
                     <div className="mb-4">

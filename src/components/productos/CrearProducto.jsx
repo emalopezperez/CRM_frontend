@@ -30,6 +30,7 @@ const CrearProducto = () => {
       estado: false,
       descuento: false,
       categoria: "",
+      variedad:""
     },
     validationSchema: Yup.object({
       titulo: Yup.string().required("El titulo es obligatorio"),
@@ -37,6 +38,7 @@ const CrearProducto = () => {
         .required("El precio es obligatorio")
         .min(0, "El precio debe ser mayor o igual a cero"),
       contenido: Yup.string().required("La descripcion es obligatorio"),
+      variedad: Yup.string().required("La variedad es obligatorio"),
     }),
     onSubmit: async (values) => {
       crearProducto(values, token);
@@ -78,30 +80,29 @@ const CrearProducto = () => {
                     <Dropzone token={token} />
                   </div>
 
-                  <div className="mb-4">
-                    <label
-                      className="block mb-2 text-sm text-gray-500"
-                      htmlFor="titulo">
-                      Titulo del producto
-                    </label>
-                    <input
-                      type="titulo"
-                      className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                      id="titulo"
-                      placeholder="Titulo del producto"
-                      value={formik.values.titulo}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    />
+                  <div className="grid gap-4 mb-4 md:grid-cols-2">
+                    <div>
+                      <label
+                        className="block mb-2 text-sm text-gray-500"
+                        htmlFor="titulo">
+                        Titulo del producto
+                      </label>
+                      <input
+                        type="titulo"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="titulo"
+                        placeholder="Titulo del producto"
+                        value={formik.values.titulo}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
 
-                    {formik.touched.titulo && formik.errors.titulo ? (
-                      <div className="mt-2 text-red-600">
-                        <p className="text-sm">{formik.errors.titulo}</p>
-                      </div>
-                    ) : null}
-                  </div>
-
-                  <div className="grid w-full gap-4 py-2 mt-6 md:grid-cols-2">
+                      {formik.touched.titulo && formik.errors.titulo ? (
+                        <div className="mt-2 text-red-600">
+                          <p className="text-sm">{formik.errors.titulo}</p>
+                        </div>
+                      ) : null}
+                    </div>
                     <div>
                       <label
                         htmlFor="cargo"
@@ -121,6 +122,31 @@ const CrearProducto = () => {
                         <option value="tecnologia">Tecnología</option>
                         <option value="hogar">Hogar</option>
                       </select>
+                    </div>
+                  </div>
+
+                  <div className="grid w-full gap-4 py-2 mt-6 md:grid-cols-2">
+                    <div>
+                      <label
+                        className="block mb-2 text-sm text-gray-500"
+                        htmlFor="variedad">
+                        Variedad
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                        id="variedad"
+                        placeholder="Variedad del producto"
+                        value={formik.values.variedad}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+
+                      {formik.touched.variedad && formik.errors.variedad ? (
+                        <div className="mt-2 text-red-600">
+                          <p className="text-sm">{formik.errors.variedad}</p>
+                        </div>
+                      ) : null}
                     </div>
 
                     <div className="mb-4">

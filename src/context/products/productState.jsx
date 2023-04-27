@@ -48,6 +48,7 @@ const ProductState = ({ children }) => {
       formData.append("categoria", values.categoria);
       formData.append("descuento", values.descuento);
       formData.append("estado", values.estado);
+      formData.append("str_variedad", values.variedad);
       if (imagenProducto) {
         formData.append("portada", imagenProducto);
       }
@@ -88,12 +89,12 @@ const ProductState = ({ children }) => {
   const editarProducto = async (productoActualizado, id, token) => {
     try {
       const formData = new FormData();
-      formData.append('titulo', productoActualizado.titulo)
-      formData.append('precio', productoActualizado.precio)
-      formData.append('estado', productoActualizado.estado)
-      formData.append('descuento', productoActualizado.descuento)
-      formData.append('descripcion', productoActualizado.descripcion)
-      formData.append('portada', imagenProducto);
+      formData.append("titulo", productoActualizado.titulo);
+      formData.append("precio", productoActualizado.precio);
+      formData.append("estado", productoActualizado.estado);
+      formData.append("descuento", productoActualizado.descuento);
+      formData.append("descripcion", productoActualizado.descripcion);
+      formData.append("portada", imagenProducto);
 
       const apiUrl = "http://localhost:3001/api";
       let response = await fetch(`${apiUrl}/editar_producto_admin/${id}`, {
@@ -101,17 +102,15 @@ const ProductState = ({ children }) => {
         headers: {
           Authorization: token,
         },
-        body: formData
+        body: formData,
       });
 
       response = await response.json();
-      
-      console.log(response);
+      router.push("/productos/lista_productos");
     } catch (error) {
       console.log(error);
     }
   };
-  
 
   return (
     <productContext.Provider
