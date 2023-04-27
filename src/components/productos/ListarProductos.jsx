@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import authContext from "@/context/auth/authContext";
 import { FiEdit } from "react-icons/fi";
@@ -6,6 +7,8 @@ import { GoKebabHorizontal } from "react-icons/go";
 import { TiDeleteOutline, TiTickOutline } from "react-icons/ti";
 
 const ListarProductos = () => {
+  const router = useRouter();
+  
   const AuthContext = useContext(authContext);
   const { token } = AuthContext;
 
@@ -26,7 +29,6 @@ const ListarProductos = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response.productos.estado);
         setListaProductos(response.productos);
       })
       .catch((error) => {
@@ -93,6 +95,9 @@ const ListarProductos = () => {
                       <thead>
                         <tr>
                           <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
+                            img
+                          </th>
+                          <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
                             Titulo
                           </th>
                           <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
@@ -100,6 +105,9 @@ const ListarProductos = () => {
                           </th>
                           <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
                             precio
+                          </th>
+                          <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
+                            categoria
                           </th>
                           <th className="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">
                             Estado
@@ -115,6 +123,15 @@ const ListarProductos = () => {
                         {listaProductos.map((producto, index) => (
                           <tr key={producto._id} className="odd:bg-gray-50">
                             <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap">
+                              <img
+                                src={`http://localhost:3001/api/obtener_portada_producto/${producto.portada}`}
+                                width={30}
+                                height={40}
+                                alt=""
+                                className="rounded-sm w-[50px]"
+                              />
+                            </td>
+                            <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap">
                               {producto.titulo}
                             </td>
                             <td className="px-4 py-2 text-gray-700 whitespace-nowrap">
@@ -122,6 +139,9 @@ const ListarProductos = () => {
                             </td>
                             <td className="px-4 py-2 text-gray-700 whitespace-nowrap">
                               {producto.precio}
+                            </td>
+                            <td className="px-4 py-2 text-gray-700 whitespace-nowrap">
+                              {producto.categoria}
                             </td>
                             <td className="px-4 py-2 text-gray-700 whitespace-nowrap">
                               {producto.estado ? (
@@ -154,7 +174,7 @@ const ListarProductos = () => {
                                   className="px-2 py-2 font-medium rounded-lg cursor-pointer hover:bg-gray-100 whitespace-nowrap hover:text-gray-700"
                                   onClick={() =>
                                     router.push(
-                                      `/account/edit_colaborador_admin/${colaborador._id}`
+                                      `/productos/editar_producto/${producto._id}`
                                     )
                                   }>
                                   <div className="flex items-center gap-3">
@@ -164,17 +184,31 @@ const ListarProductos = () => {
                                 </button>
 
                                 <button
-                                  href=""
+                                  href="#"
                                   className="px-2 py-2 font-medium rounded-lg cursor-pointer hover:bg-gray-100 whitespace-nowrap hover:text-gray-700">
                                   <div className="flex items-center gap-1">
                                     {producto.estado ? (
-                                      <span className="p-1 text-white bg-green-200 rounded-md">
-                                        Publicado
-                                      </span>
+                                      <button
+                                        className="flex items-center gap-1"
+                                        onClick={() =>
+                                          router.push(
+                                            `/productos/desactivar_colaborador_admin/${producto._id}`
+                                          )
+                                        }>
+                                        <TiDeleteOutline className="text-xl text-red-500" />
+                                        <span>Desactivar</span>
+                                      </button>
                                     ) : (
-                                      <span className="p-1 text-white bg-red-300 rounded-md">
-                                        Desactivado
-                                      </span>
+                                      <button
+                                        onClick={() =>
+                                          router.push(
+                                            `/account/activar_colaborador_admin/${producto._id}`
+                                          )
+                                        }
+                                        className="flex items-center gap-1">
+                                        <TiTickOutline className="text-xl text-green-500" />
+                                        <span>Activar</span>
+                                      </button>
                                     )}
                                   </div>
                                 </button>

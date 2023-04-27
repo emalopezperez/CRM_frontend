@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import authContext from "@/context/auth/authContext";
@@ -7,14 +8,18 @@ import Alerta from "../alertas/Alerta";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-const CrearProducto = () => {
+const EditarProducto = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
   const AuthContext = useContext(authContext);
-  const { usuario, token } = AuthContext;
+  const { token } = AuthContext;
 
   const ProductContext = useContext(productContext);
-  const { mensaje_archivo, crearProducto, mensaje_producto } = ProductContext;
+  const { mensaje_archivo, mensaje_producto, editarProducto } = ProductContext;
 
   const [colaboradorAuth, setColaboradorAuth] = useState(false);
+  const [productoObtenido, setProductoObtenido] = useState({});
 
   useEffect(() => {
     if (token) {
@@ -22,26 +27,53 @@ const CrearProducto = () => {
     }
   }, [token]);
 
+  useEffect(() => {
+    llamadoApi();
+  }, [id]);
+
+  const llamadoApi = async () => {
+    const apiUrl = "http://localhost:3001/api";
+    let url = `${apiUrl}/obtener_producto_admin/${id}`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+    const data = await response.json();
+    setProductoObtenido(data.data);
+  };
+
   const formik = useFormik({
     initialValues: {
       titulo: "",
       precio: "",
-      contenido: "",
-      estado: false,
-      descuento: false,
+      descripcion: "",
+      estado: "",
+      descuento: "",
       categoria: "",
     },
     validationSchema: Yup.object({
-      titulo: Yup.string().required("El titulo es obligatorio"),
-      precio: Yup.number()
-        .required("El precio es obligatorio")
-        .min(0, "El precio debe ser mayor o igual a cero"),
-      contenido: Yup.string().required("La descripcion es obligatorio"),
+      precio: Yup.number().min(0, "El precio debe ser mayor o igual a cero"),
     }),
     onSubmit: async (values) => {
-      crearProducto(values, token);
+      const productoActualizado = { ...productoObtenido, ...values };
+      editarProducto(productoActualizado, id, token);
     },
   });
+
+  useEffect(() => {
+    formik.setValues({
+      titulo: productoObtenido.titulo,
+      precio: productoObtenido.precio,
+      descripcion: productoObtenido.contenido,
+      estado: productoObtenido.estado,
+      descuento: productoObtenido.descuento,
+      categoria: productoObtenido.categoria,
+    });
+  }, [productoObtenido]);
 
   return (
     <div className="flex flex-col pt-16 pl-52">
@@ -51,10 +83,10 @@ const CrearProducto = () => {
           {mensaje_producto && <Alerta mensaje={mensaje_producto} />}
           <div className="flex justify-center pl-42"></div>
           <span className="flex justify-center text-sm text-gray-300">
-            Productos
+            Editar
           </span>
           <h2 className="flex justify-center my-4 font-sans text-2xl font-bold text-black">
-            Nuevo producto
+            Editar producto
           </h2>
           <div className="flex justify-center gap-6 mt-12 text-sm text-black">
             <Link
@@ -89,16 +121,11 @@ const CrearProducto = () => {
                       className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                       id="titulo"
                       placeholder="Titulo del producto"
+                      defaultValue={productoObtenido.titulo}
                       value={formik.values.titulo}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                     />
-
-                    {formik.touched.titulo && formik.errors.titulo ? (
-                      <div className="mt-2 text-red-600">
-                        <p className="text-sm">{formik.errors.titulo}</p>
-                      </div>
-                    ) : null}
                   </div>
 
                   <div className="grid w-full gap-4 py-2 mt-6 md:grid-cols-2">
@@ -126,7 +153,7 @@ const CrearProducto = () => {
                     <div className="mb-4">
                       <label
                         className="block mb-2 text-sm text-gray-500"
-                        htmlFor="number">
+                        htmlFor="precio">
                         Precio
                       </label>
                       <input
@@ -134,6 +161,7 @@ const CrearProducto = () => {
                         className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                         id="precio"
                         placeholder="Precio del producto"
+                        defaultValue={productoObtenido.precio}
                         value={formik.values.precio}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -158,16 +186,11 @@ const CrearProducto = () => {
                       className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                       id="contenido"
                       placeholder="Descripcion del producto"
+                      defaultValue={productoObtenido.contenido}
                       value={formik.values.contenido}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                     />
-
-                    {formik.touched.contenido && formik.errors.contenido ? (
-                      <div className="mt-2 text-red-600">
-                        <p className="text-sm">{formik.errors.contenido}</p>
-                      </div>
-                    ) : null}
                   </div>
 
                   <div className="flex justify-between mx-2 mb-2">
@@ -179,6 +202,7 @@ const CrearProducto = () => {
                         className="sr-only peer"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        defaultChecked={productoObtenido.estado}
                         checked={formik.values.estado}
                       />
                       <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
@@ -195,6 +219,7 @@ const CrearProducto = () => {
                         className="sr-only peer"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        defaultChecked={productoObtenido.descuento}
                         checked={formik.values.descuento}
                       />
                       <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
@@ -207,7 +232,7 @@ const CrearProducto = () => {
                   <input
                     type="submit"
                     className="w-full p-2 text-white bg-orange-600 cursor-pointer hover:bg-orange-400"
-                    value="Crear producto"
+                    value="Editar producto"
                   />
                 </form>
               ) : (
@@ -221,4 +246,4 @@ const CrearProducto = () => {
   );
 };
 
-export default CrearProducto;
+export default EditarProducto;

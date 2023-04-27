@@ -85,9 +85,33 @@ const ProductState = ({ children }) => {
     }
   };
 
-  const listarProductos = async() =>{
-    
-  }
+  const editarProducto = async (productoActualizado, id, token) => {
+    try {
+      const formData = new FormData();
+      formData.append('titulo', productoActualizado.titulo)
+      formData.append('precio', productoActualizado.precio)
+      formData.append('estado', productoActualizado.estado)
+      formData.append('descuento', productoActualizado.descuento)
+      formData.append('descripcion', productoActualizado.descripcion)
+      formData.append('portada', imagenProducto);
+
+      const apiUrl = "http://localhost:3001/api";
+      let response = await fetch(`${apiUrl}/editar_producto_admin/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: token,
+        },
+        body: formData
+      });
+
+      response = await response.json();
+      
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
 
   return (
     <productContext.Provider
@@ -97,7 +121,7 @@ const ProductState = ({ children }) => {
         mostrarAlerta,
         obtenerImagenProducto,
         crearProducto,
-        listarProductos
+        editarProducto,
       }}>
       {children}
     </productContext.Provider>
