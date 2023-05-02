@@ -14,6 +14,7 @@ const ProductState = ({ children }) => {
   const router = useRouter();
 
   const [imagenProducto, setImagenProducto] = useState(null);
+  const [productoObtenido, setProductoObtenido] = useState({});
 
   const initialState = {
     mensaje_archivo: null,
@@ -112,6 +113,22 @@ const ProductState = ({ children }) => {
     }
   };
 
+  const obtenerProductoEdit = async (id, token) => {
+    const apiUrl = "http://localhost:3001/api";
+    let url = `${apiUrl}/obtener_producto_admin/${id}`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+    const data = await response.json();
+    setProductoObtenido(data.data);
+
+  };
+
   return (
     <productContext.Provider
       value={{
@@ -121,6 +138,8 @@ const ProductState = ({ children }) => {
         obtenerImagenProducto,
         crearProducto,
         editarProducto,
+        obtenerProductoEdit,
+        productoObtenido
       }}>
       {children}
     </productContext.Provider>

@@ -2,7 +2,7 @@ import React, { useCallback, useState, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import productContext from "@/context/products/productContext";
 
-const Dropzone = () => {
+const Dropzone = ({imagen}) => {
   const ProductContext = useContext(productContext);
   const { mostrarAlerta , obtenerImagenProducto} = ProductContext;
 
