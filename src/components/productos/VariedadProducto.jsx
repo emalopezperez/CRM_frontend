@@ -3,7 +3,6 @@ import { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import authContext from "@/context/auth/authContext";
 import productContext from "@/context/products/productContext";
-import Dropzone from "../dropzone/Dropzone";
 import generarSku from "../../components/helpers/Helpers";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -16,11 +15,17 @@ const VariedadProducto = ({ titulo, str_variedad }) => {
       variedad: "",
     },
     validationSchema: Yup.object({
-      precio: Yup.number().min(0, "El precio debe ser mayor o igual a cero"),
+      proveedor: Yup.string()
+        .matches(/^[a-zA-ZÑñ\s]+$/, "Solo se permiten letras en este campo")
+        .required("Este campo es requerido"),
+      variedad: Yup.string()
+        .matches(/^[a-zA-ZÑñ\s]+$/, "Solo se permiten letras en este campo")
+        .required("Este campo es requerido"),
     }),
     onSubmit: async (values, { resetForm }) => {
       console.log(generarSku(titulo, str_variedad, values.proveedor));
-      resetForm(); // reiniciar los valores del formulario después de enviarlo
+
+      resetForm();
     },
   });
 
@@ -52,6 +57,12 @@ const VariedadProducto = ({ titulo, str_variedad }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+
+              {formik.touched.proveedor && formik.errors.proveedor ? (
+                <div className="mt-2 text-red-600">
+                  <p className="text-sm">{formik.errors.proveedor}</p>
+                </div>
+              ) : null}
             </div>
 
             <div>
@@ -69,6 +80,12 @@ const VariedadProducto = ({ titulo, str_variedad }) => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
+
+              {formik.touched.variedad && formik.errors.variedad ? (
+                <div className="mt-2 text-red-600">
+                  <p className="text-sm">{formik.errors.variedad}</p>
+                </div>
+              ) : null}
             </div>
 
             <div className="flex items-center mt-6">
