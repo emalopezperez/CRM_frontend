@@ -1,7 +1,8 @@
-import { useReducer, useState } from "react";
+import { useReducer, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import productContext from "./productContext";
 import productReducer from "./productReducer";
+import authContext from "../auth/authContext";
 
 import {
   PRODUCTO_CREADO_EXITOSO,
@@ -11,6 +12,9 @@ import {
 } from "../../types";
 
 const ProductState = ({ children }) => {
+  const AuthContext = useContext(authContext);
+  const { token } = AuthContext;
+
   const router = useRouter();
 
   const [imagenProducto, setImagenProducto] = useState(null);
@@ -40,7 +44,7 @@ const ProductState = ({ children }) => {
     setImagenProducto(img);
   };
 
-  const crearProducto = async (values, token) => {
+  const crearProducto = async (values) => {
     try {
       const formData = new FormData();
       formData.append("titulo", values.titulo);
@@ -87,7 +91,7 @@ const ProductState = ({ children }) => {
     }
   };
 
-  const editarProducto = async (productoActualizado, id, token) => {
+  const editarProducto = async (productoActualizado, id) => {
     try {
       const formData = new FormData();
       formData.append("titulo", productoActualizado.titulo);
@@ -113,7 +117,7 @@ const ProductState = ({ children }) => {
     }
   };
 
-  const obtenerProductoEdit = async (id, token) => {
+  const obtenerProductoEdit = async (id) => {
     const apiUrl = "http://localhost:3001/api";
     let url = `${apiUrl}/obtener_producto_admin/${id}`;
 
@@ -126,7 +130,26 @@ const ProductState = ({ children }) => {
     });
     const data = await response.json();
     setProductoObtenido(data.data);
+  };
 
+  const registroVariedadProducto = async (id, values) => {
+    try {
+      const apiUrl = "http://localhost:3001/api";
+
+      let response = await fetch(`${apiUrl}/registro_variedad_producto`, {
+        method: "POST",
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      response = await response.json();
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -139,7 +162,8 @@ const ProductState = ({ children }) => {
         crearProducto,
         editarProducto,
         obtenerProductoEdit,
-        productoObtenido
+        productoObtenido,
+        registroVariedadProducto,
       }}>
       {children}
     </productContext.Provider>

@@ -256,9 +256,13 @@ const EditarProducto = () => {
                           className="w-full p-2 text-white bg-orange-600 cursor-pointer hover:bg-orange-400"
                           value="Editar producto"
                         />
-                        
                       </form>
-                      <VariedadProducto titulo={productoObtenido.titulo} str_variedad={productoObtenido.str_variedad} />
+                      <VariedadProducto
+                        producto={productoObtenido._id}
+                        str_variedad={productoObtenido.str_variedad}
+                        titulo={productoObtenido.titulo}
+                        id={id}
+                      />
                     </>
                   ) : (
                     <h2 className="text-black">No tienes acceso</h2>

@@ -7,12 +7,21 @@ import generarSku from "../../components/helpers/Helpers";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-const VariedadProducto = ({ titulo, str_variedad }) => {
+
+
+const VariedadProducto = ({ titulo, str_variedad, id, producto }) => {
+  const AuthContext = useContext(authContext);
+  const { token } = AuthContext;
+
+  const ProductContext = useContext(productContext);
+  const { registroVariedadProducto } = ProductContext;
+
   const formik = useFormik({
     initialValues: {
       proveedor: "",
       sku: "",
       variedad: "",
+      producto: producto
     },
     validationSchema: Yup.object({
       proveedor: Yup.string()
@@ -22,9 +31,10 @@ const VariedadProducto = ({ titulo, str_variedad }) => {
         .matches(/^[a-zA-ZÑñ\s]+$/, "Solo se permiten letras en este campo")
         .required("Este campo es requerido"),
     }),
-    onSubmit: async (values, { resetForm }) => {
-      console.log(generarSku(titulo, str_variedad, values.proveedor));
+    onSubmit: async (values, { resetForm}) => {
+      values.sku = generarSku(titulo, str_variedad, values.proveedor);
 
+      registroVariedadProducto(id, values);
       resetForm();
     },
   });
