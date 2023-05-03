@@ -5,6 +5,7 @@ import authContext from "@/context/auth/authContext";
 import productContext from "@/context/products/productContext";
 import Dropzone from "../dropzone/Dropzone";
 import Alerta from "../alertas/Alerta";
+import AlertSuccess from "../alertas/AlertSucces";
 import VariedadProducto from "./VariedadProducto";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -20,6 +21,7 @@ const EditarProducto = () => {
   const {
     mensaje_archivo,
     mensaje_producto,
+    mensaje_variedad,
     editarProducto,
     obtenerProductoEdit,
     productoObtenido,
@@ -80,6 +82,8 @@ const EditarProducto = () => {
             <div className="">
               {mensaje_archivo && <Alerta mensaje={mensaje_archivo} />}
               {mensaje_producto && <Alerta mensaje={mensaje_producto} />}
+
+              {mensaje_variedad && <AlertSuccess mensaje={mensaje_variedad} />}
               <div className="flex justify-center pl-42"></div>
               <span className="flex justify-center text-sm text-gray-300">
                 Editar
@@ -141,7 +145,7 @@ const EditarProducto = () => {
                               value={formik.values.categoria}
                               onChange={formik.handleChange}
                               onBlur={formik.handleBlur}>
-                              <option value="" defaultValue disabled>
+                              <option  defaultValue disabled>
                                 Seleccionar categoría
                               </option>
                               <option value="ropa">Ropa</option>
@@ -220,7 +224,7 @@ const EditarProducto = () => {
                             <input
                               type="checkbox"
                               name="estado"
-                              value=""
+                              value="estado"
                               className="sr-only peer"
                               onChange={formik.handleChange}
                               onBlur={formik.handleBlur}
@@ -237,7 +241,7 @@ const EditarProducto = () => {
                             <input
                               type="checkbox"
                               name="descuento"
-                              value=""
+                              value="descuento"
                               className="sr-only peer"
                               onChange={formik.handleChange}
                               onBlur={formik.handleBlur}
@@ -263,6 +267,8 @@ const EditarProducto = () => {
                         titulo={productoObtenido.titulo}
                         id={id}
                       />
+
+                      
                     </>
                   ) : (
                     <h2 className="text-black">No tienes acceso</h2>

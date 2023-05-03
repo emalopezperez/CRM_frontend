@@ -8,7 +8,7 @@ import { TiDeleteOutline, TiTickOutline } from "react-icons/ti";
 
 const ListarProductos = () => {
   const router = useRouter();
-  
+
   const AuthContext = useContext(authContext);
   const { token } = AuthContext;
 
@@ -171,7 +171,7 @@ const ListarProductos = () => {
                                 aria-label="Teams Nav"
                                 className="absolute flex flex-col p-2 px-4 text-white rounded-md bg-black/90">
                                 <button
-                                  className="px-2 py-2 font-medium rounded-lg cursor-pointer hover:bg-gray-100 whitespace-nowrap hover:text-gray-700"
+                                  className="px-2 py-2 font-medium rounded-lg cursor-pointer whitespace-nowrap "
                                   onClick={() =>
                                     router.push(
                                       `/productos/editar_producto/${producto._id}`
@@ -180,36 +180,6 @@ const ListarProductos = () => {
                                   <div className="flex items-center gap-3">
                                     <FiEdit className="text-yellow-600" />
                                     Edit
-                                  </div>
-                                </button>
-
-                                <button
-                                  href="#"
-                                  className="px-2 py-2 font-medium rounded-lg cursor-pointer hover:bg-gray-100 whitespace-nowrap hover:text-gray-700">
-                                  <div className="flex items-center gap-1">
-                                    {producto.estado ? (
-                                      <button
-                                        className="flex items-center gap-1"
-                                        onClick={() =>
-                                          router.push(
-                                            `/productos/desactivar_colaborador_admin/${producto._id}`
-                                          )
-                                        }>
-                                        <TiDeleteOutline className="text-xl text-red-500" />
-                                        <span>Desactivar</span>
-                                      </button>
-                                    ) : (
-                                      <button
-                                        onClick={() =>
-                                          router.push(
-                                            `/account/activar_colaborador_admin/${producto._id}`
-                                          )
-                                        }
-                                        className="flex items-center gap-1">
-                                        <TiTickOutline className="text-xl text-green-500" />
-                                        <span>Activar</span>
-                                      </button>
-                                    )}
                                   </div>
                                 </button>
                               </nav>

@@ -3,6 +3,7 @@ import {
   PRODUCTO_ERROR,
   MOSTRAR_ALERTA,
   OCULTAR_ALERTA,
+  VARIEDAD_REGISTRADA
 } from "../../types";
 
 export default (state, action) => {
@@ -30,6 +31,14 @@ export default (state, action) => {
         ...state,
         mensaje_producto: action.payload,
       };
+
+      case VARIEDAD_REGISTRADA:
+      return {
+        ...state,
+        mensaje_variedad: action.payload,
+      };
+
+
     default:
       return state;
   }

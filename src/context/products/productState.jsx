@@ -9,6 +9,7 @@ import {
   PRODUCTO_ERROR,
   MOSTRAR_ALERTA,
   OCULTAR_ALERTA,
+  VARIEDAD_REGISTRADA,
 } from "../../types";
 
 const ProductState = ({ children }) => {
@@ -23,6 +24,7 @@ const ProductState = ({ children }) => {
   const initialState = {
     mensaje_archivo: null,
     mensaje_producto: null,
+    mensaje_variedad: null,
   };
 
   const [state, dispatch] = useReducer(productReducer, initialState);
@@ -146,6 +148,30 @@ const ProductState = ({ children }) => {
       });
       response = await response.json();
 
+      dispatch({
+        type: VARIEDAD_REGISTRADA,
+        payload: response.message,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const eliminarVariedad = async (id) => {
+    try {
+      const apiUrl = "http://localhost:3001/api/";
+      let url = `${apiUrl}eliminar_variedad_producto/${id}`;
+
+      let response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      });
+
+      response = await response.json();
+
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -157,6 +183,7 @@ const ProductState = ({ children }) => {
       value={{
         mensaje_archivo: state.mensaje_archivo,
         mensaje_producto: state.mensaje_producto,
+        mensaje_variedad: state.mensaje_variedad,
         mostrarAlerta,
         obtenerImagenProducto,
         crearProducto,
@@ -164,6 +191,7 @@ const ProductState = ({ children }) => {
         obtenerProductoEdit,
         productoObtenido,
         registroVariedadProducto,
+        eliminarVariedad,
       }}>
       {children}
     </productContext.Provider>

@@ -1,13 +1,10 @@
-import { useRouter } from "next/router";
 import { useContext, useState, useEffect } from "react";
-import Link from "next/link";
 import authContext from "@/context/auth/authContext";
 import productContext from "@/context/products/productContext";
+import ListaVariedad from "./ListaVariedad";
 import generarSku from "../../components/helpers/Helpers";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
-
 
 const VariedadProducto = ({ titulo, str_variedad, id, producto }) => {
   const AuthContext = useContext(authContext);
@@ -16,12 +13,14 @@ const VariedadProducto = ({ titulo, str_variedad, id, producto }) => {
   const ProductContext = useContext(productContext);
   const { registroVariedadProducto } = ProductContext;
 
+  const [listVariedad, setListVariedad] = useState([]);
+
   const formik = useFormik({
     initialValues: {
       proveedor: "",
       sku: "",
       variedad: "",
-      producto: producto
+      producto: producto,
     },
     validationSchema: Yup.object({
       proveedor: Yup.string()
@@ -31,13 +30,38 @@ const VariedadProducto = ({ titulo, str_variedad, id, producto }) => {
         .matches(/^[a-zA-ZÑñ\s]+$/, "Solo se permiten letras en este campo")
         .required("Este campo es requerido"),
     }),
-    onSubmit: async (values, { resetForm}) => {
+    onSubmit: async (values, { resetForm }) => {
       values.sku = generarSku(titulo, str_variedad, values.proveedor);
 
       registroVariedadProducto(id, values);
+      llamadoApi();
       resetForm();
     },
   });
+
+  const llamadoApi = () => {
+    const apiUrl = "http://localhost:3001/api/";
+    let url = `${apiUrl}obtener_variedad_producto/${id}`;
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setListVariedad(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    llamadoApi();
+  }, [listVariedad]);
 
   return (
     <div className="flex gap-8 ">
@@ -101,12 +125,22 @@ const VariedadProducto = ({ titulo, str_variedad, id, producto }) => {
             <div className="flex items-center mt-6">
               <input
                 type="submit"
-                className="w-full p-2 text-white bg-blue-400 cursor-pointer hover:bg-orange-400"
+                className="w-full p-2 text-white bg-blue-600 cursor-pointer hover:bg-orange-400"
                 value="Agregar"
               />
             </div>
           </div>
         </form>
+
+        {listVariedad ? (
+          <section className="flex flex-col gap-4 pb-4 mt-6 text-black rounded shadow-md">
+            {listVariedad.map((element) => (
+              <ListaVariedad key={element.id} element={element}/>
+            ))}
+          </section>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
